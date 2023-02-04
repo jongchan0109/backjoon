@@ -1,25 +1,36 @@
 #pragma warning(disable:4996)
 #include<iostream>
 using namespace std;
-
+#define MAX 100001
+#define MOD 1000000009
 int main(void)
 {
-	int n;
-	int p[1001],dp[1001];
-	cin >> n;
-	for (int i = 1; i <= n; i++)
-		cin >> p[i];
-	dp[1] = p[1];
-	for (int i = 2; i <= n; i++)
+	long long dp[MAX][4];
+	int T,n;
+	cin >> T;
+
+	dp[1][1] = 1;
+	dp[1][2] = 0;
+	dp[1][3] = 0;
+
+	dp[2][1] = 0;
+	dp[2][2] = 1;
+	dp[2][3] = 0;
+
+	dp[3][1] = 1;
+	dp[3][2] = 1;
+	dp[3][3] = 1;
+
+	while (T--)
 	{
-		int min = p[i];
-		for (int j = 1; i >= 2 * j; j++)
+		cin >> n;
+		for (int i = 4; i <= n; i++)
 		{
-			if (min > dp[j] + dp[i - j])
-				min = dp[j] + dp[i - j];
+			dp[i][1] = (dp[i - 1][2] + dp[i - 1][3])%MOD;
+			dp[i][2] = (dp[i - 2][1] + dp[i - 2][3]) % MOD;
+			dp[i][3] = (dp[i - 3][1] + dp[i - 3][2]) % MOD;
 		}
-		dp[i] = min;
+		cout << (dp[n][1] + dp[n][2] + dp[n][3]) % MOD << endl;
 	}
-	cout << dp[n];
 	return 0;
 }
